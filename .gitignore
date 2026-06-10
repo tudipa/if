@@ -1,6 +1,13 @@
 node_modules/
 .next/
+.open-next/
+.wrangler/
 out/
 .env*.local
+.env
+prisma/*.db
+prisma/*.db-journal
+dev.db
+dev.db-journal
 dev-server.out.log
 dev-server.err.log

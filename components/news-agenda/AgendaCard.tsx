@@ -16,13 +16,30 @@ type AgendaCardProps = {
 const statusTone = {
   "Akan Datang": "blue",
   Berlangsung: "green",
-  Selesai: "slate"
+  Selesai: "slate",
+  upcoming: "blue",
+  ongoing: "green",
+  completed: "slate"
 } as const;
 
 function splitDate(date: string) {
+  const parsedDate = new Date(date);
+  if (!Number.isNaN(parsedDate.getTime())) {
+    return {
+      day: parsedDate.toLocaleDateString("id-ID", { day: "2-digit" }),
+      month: parsedDate.toLocaleDateString("id-ID", { month: "short" })
+    };
+  }
+
   const [day, month] = date.split(" ");
   return { day, month };
 }
+
+const statusLabel = {
+  upcoming: "Akan Datang",
+  ongoing: "Berlangsung",
+  completed: "Selesai"
+} as const;
 
 export function AgendaCard({ title, slug, category, date, time, location, status, excerpt }: AgendaCardProps) {
   const { day, month } = splitDate(date);
@@ -37,7 +54,9 @@ export function AgendaCard({ title, slug, category, date, time, location, status
         <div>
           <div className="flex flex-wrap gap-2">
             <Badge tone="blue">{category}</Badge>
-            <Badge tone={statusTone[status as keyof typeof statusTone] || "slate"}>{status}</Badge>
+            <Badge tone={statusTone[status as keyof typeof statusTone] || "slate"}>
+              {statusLabel[status as keyof typeof statusLabel] || status}
+            </Badge>
           </div>
           <h3 className="mt-4 text-lg font-bold leading-snug text-ink">
             <Link href={`/berita-agenda/${slug}`} className="hover:text-ocean">

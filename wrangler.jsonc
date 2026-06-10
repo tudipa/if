@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "if-cms",
+  "compatibility_date": "2026-06-09",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "if_cms",
+      "database_name": "if-cms",
+      "database_id": "b1138e53-cd6a-47ac-ab99-74b2db3d0494"
+    }
+  ]
+}

@@ -1,20 +1,30 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { AgendaCard } from "@/components/news-agenda/AgendaCard";
 import { NewsCard } from "@/components/news-agenda/NewsCard";
 import { SearchInput } from "@/components/news-agenda/SearchInput";
 import { SectionHeading } from "@/components/profile/SectionHeading";
+import { ErrorState, LoadingState } from "@/components/admin/StatusStates";
 import { EmptyState } from "@/components/student/EmptyState";
 import { FilterTabs } from "@/components/student/FilterTabs";
-import { agendaItems, newsItems } from "@/lib/data/news-agenda";
+import { fetchAgenda } from "@/lib/queries/agenda";
+import { fetchNews } from "@/lib/queries/news";
 
 const typeFilters = ["Semua", "Berita", "Agenda"];
 
 export function NewsAgendaExplorer() {
+  const newsQuery = useQuery({ queryKey: ["news", "public"], queryFn: () => fetchNews("?status=published&limit=100") });
+  const agendaQuery = useQuery({
+    queryKey: ["agenda", "public"],
+    queryFn: () => fetchAgenda("?publishStatus=published&limit=100")
+  });
+  const newsItems = useMemo(() => newsQuery.data?.data ?? [], [newsQuery.data?.data]);
+  const agendaItems = useMemo(() => agendaQuery.data?.data ?? [], [agendaQuery.data?.data]);
   const categories = useMemo(
     () => ["Semua Kategori", ...Array.from(new Set([...newsItems, ...agendaItems].map((item) => item.category)))],
-    []
+    [agendaItems, newsItems]
   );
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("Semua");
@@ -36,6 +46,14 @@ export function NewsAgendaExplorer() {
     ? agendaItems.filter((item) => matchesText(item) && matchesCategory(item.category))
     : [];
   const isEmpty = filteredNews.length === 0 && filteredAgenda.length === 0;
+
+  if (newsQuery.isLoading || agendaQuery.isLoading) {
+    return <LoadingState label="Memuat berita dan agenda..." />;
+  }
+
+  if (newsQuery.isError || agendaQuery.isError) {
+    return <ErrorState label="Gagal memuat berita dan agenda dari API." />;
+  }
 
   return (
     <div>
@@ -90,7 +108,7 @@ export function NewsAgendaExplorer() {
           />
           <div className="grid gap-5">
             {filteredAgenda.map((item) => (
-              <AgendaCard {...item} key={item.id} />
+              <AgendaCard {...item} key={item.id} status={item.statusAgenda} />
             ))}
           </div>
         </section>

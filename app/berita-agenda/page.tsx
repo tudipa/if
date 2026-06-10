@@ -2,14 +2,11 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { FeaturedNews } from "@/components/news-agenda/FeaturedNews";
 import { NewsAgendaExplorer } from "@/components/news-agenda/NewsAgendaExplorer";
-import { NewsCard } from "@/components/news-agenda/NewsCard";
 import { PageHeader } from "@/components/profile/PageHeader";
-import { newsItems } from "@/lib/data/news-agenda";
 
 export default function NewsAgendaPage() {
-  const featuredNews = newsItems[0];
-
   return (
     <>
       <Navbar />
@@ -27,8 +24,7 @@ export default function NewsAgendaPage() {
                 <p className="text-sm font-bold uppercase tracking-wide text-ocean">Sorotan</p>
                 <h2 className="mt-3 text-3xl font-bold text-ink sm:text-4xl">Berita Utama</h2>
                 <p className="mt-4 text-base leading-8 text-slate-600">
-                  Sorotan berita menampilkan satu informasi pilihan dari data dummy agar halaman memiliki titik awal baca
-                  yang jelas.
+                  Sorotan berita menampilkan satu informasi pilihan dari CMS agar halaman memiliki titik awal baca yang jelas.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <a
@@ -46,7 +42,7 @@ export default function NewsAgendaPage() {
                   </a>
                 </div>
               </div>
-              <NewsCard {...featuredNews} />
+              <FeaturedNews />
             </div>
           </div>
         </section>

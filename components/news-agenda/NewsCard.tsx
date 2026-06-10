@@ -11,6 +11,12 @@ type NewsCardProps = {
 };
 
 export function NewsCard({ title, slug, category, date, excerpt }: NewsCardProps) {
+  const formattedDate = new Date(date).toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+
   return (
     <article className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
       <div className="flex aspect-[16/9] items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50">
@@ -21,7 +27,7 @@ export function NewsCard({ title, slug, category, date, excerpt }: NewsCardProps
           <Badge tone="blue">{category}</Badge>
           <span className="flex items-center gap-2 text-xs font-semibold text-slate-500">
             <CalendarDays size={15} />
-            {date}
+            {formattedDate}
           </span>
         </div>
         <h3 className="mt-4 text-lg font-bold leading-snug text-ink">{title}</h3>
