@@ -16,7 +16,7 @@ export default function AdminAgendaPage() {
   const [publishStatus, setPublishStatus] = useState("");
   const queryClient = useQueryClient();
   const queryString = useMemo(() => {
-    const params = new URLSearchParams({ limit: "100" });
+    const params = new URLSearchParams({ admin: "true", limit: "100" });
     if (search) params.set("search", search);
     if (category) params.set("category", category);
     if (statusAgenda) params.set("statusAgenda", statusAgenda);

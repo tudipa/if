@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handleApiError } from "@/lib/api-response";
+import { isAdminRequest, requireAdmin } from "@/lib/auth";
 import { createAgenda, listAgenda } from "@/lib/cms-store";
 import { agendaSchema } from "@/lib/validations/agenda";
 
@@ -8,7 +9,8 @@ export async function GET(request: NextRequest) {
   const search = params.get("search")?.trim();
   const category = params.get("category")?.trim();
   const statusAgenda = params.get("statusAgenda")?.trim();
-  const publishStatus = params.get("publishStatus")?.trim();
+  const isAdmin = isAdminRequest(request) && params.get("admin") === "true";
+  const publishStatus = isAdmin ? params.get("publishStatus")?.trim() : params.get("publishStatus")?.trim() || "published";
   const featured = params.get("featured")?.trim();
   const page = Math.max(Number(params.get("page") ?? 1), 1);
   const limit = Math.min(Math.max(Number(params.get("limit") ?? 20), 1), 100);
@@ -17,6 +19,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const unauthorized = requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
   try {
     const input = agendaSchema.parse(await request.json());
     const item = await createAgenda(input);

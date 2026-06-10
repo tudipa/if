@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handleApiError } from "@/lib/api-response";
 import { isAdminRequest, requireAdmin } from "@/lib/auth";
-import { createNews, listNews } from "@/lib/cms-store";
-import { newsSchema } from "@/lib/validations/news";
+import { activitySchema } from "@/lib/validations/student";
+import { createActivity, listActivities } from "@/lib/cms-store";
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
-  const search = params.get("search")?.trim();
-  const category = params.get("category")?.trim();
   const isAdmin = isAdminRequest(request) && params.get("admin") === "true";
-  const status = isAdmin ? params.get("status")?.trim() : params.get("status")?.trim() || "published";
-  const featured = params.get("featured")?.trim();
   const page = Math.max(Number(params.get("page") ?? 1), 1);
   const limit = Math.min(Math.max(Number(params.get("limit") ?? 20), 1), 100);
 
-  return NextResponse.json(await listNews({ search, category, status, featured, page, limit }));
+  return NextResponse.json(
+    await listActivities({
+      search: params.get("search")?.trim(),
+      category: params.get("category")?.trim(),
+      publicationStatus: isAdmin ? params.get("publicationStatus")?.trim() : "published",
+      page,
+      limit
+    })
+  );
 }
 
 export async function POST(request: NextRequest) {
@@ -22,10 +26,8 @@ export async function POST(request: NextRequest) {
   if (unauthorized) return unauthorized;
 
   try {
-    const input = newsSchema.parse(await request.json());
-    const item = await createNews(input);
-
-    return NextResponse.json(item, { status: 201 });
+    const input = activitySchema.parse(await request.json());
+    return NextResponse.json(await createActivity(input), { status: 201 });
   } catch (error) {
     return handleApiError(error);
   }

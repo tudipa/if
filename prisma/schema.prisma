@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model News {
   id        String        @id @default(cuid())
   title     String
@@ -20,6 +29,49 @@ model News {
   featured  Boolean       @default(false)
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+}
+
+model StudentAchievement {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  studentName     String
+  level           String
+  eventName       String
+  organizer       String
+  date            DateTime
+  description     String
+  image           String?
+  attachment      String?
+  publicationStatus String @default("draft")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model StudentActivity {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  category        String
+  date            DateTime
+  location        String
+  description     String
+  image           String?
+  attachment      String?
+  publicationStatus String @default("draft")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  galleryImages   ActivityGalleryImage[]
+}
+
+model ActivityGalleryImage {
+  id         String          @id @default(cuid())
+  activityId String
+  url        String
+  alt        String?
+  sortOrder  Int             @default(0)
+  createdAt  DateTime        @default(now())
+  activity   StudentActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
 
 model Agenda {

@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { PageHeader } from "@/components/profile/PageHeader";
 import { SectionHeading } from "@/components/profile/SectionHeading";
-import { StudentActivityGrid } from "@/components/student/StudentActivityGrid";
+import { StudentActivityCmsGrid } from "@/components/student/StudentActivityCmsGrid";
 
 export default function StudentActivityPage() {
   return (
@@ -21,9 +21,9 @@ export default function StudentActivityPage() {
             <SectionHeading
               eyebrow="Agenda"
               title="Daftar Kegiatan Mahasiswa"
-              description="Daftar kegiatan berikut menggunakan data dummy agar struktur halaman siap dikembangkan menjadi agenda resmi jurusan."
+              description="Daftar kegiatan berikut dikelola melalui CMS dan hanya menampilkan kegiatan yang sudah dipublikasikan."
             />
-            <StudentActivityGrid />
+            <StudentActivityCmsGrid />
             <div className="mt-10 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>

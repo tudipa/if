@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { PageHeader } from "@/components/profile/PageHeader";
 import { SectionHeading } from "@/components/profile/SectionHeading";
-import { StudentAchievementGrid } from "@/components/student/StudentAchievementGrid";
+import { StudentAchievementCmsGrid } from "@/components/student/StudentAchievementCmsGrid";
 
 export default function StudentAchievementPage() {
   return (
@@ -21,9 +21,9 @@ export default function StudentAchievementPage() {
             <SectionHeading
               eyebrow="Capaian"
               title="Daftar Prestasi Mahasiswa"
-              description="Data berikut masih berupa placeholder akademik dan dapat diganti dengan prestasi resmi setelah tersedia."
+              description="Data berikut dikelola melalui CMS dan hanya menampilkan prestasi yang sudah dipublikasikan."
             />
-            <StudentAchievementGrid />
+            <StudentAchievementCmsGrid />
             <div className="mt-10 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
